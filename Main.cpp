@@ -2,11 +2,9 @@
 #include "Main.h"
 using namespace std;
 
-
 int main() {
 
 	int choice = 0;
-
 
 	while (choice != 3) {
 
@@ -23,13 +21,6 @@ int main() {
 		else cout << "Invalid choice. Please try again." << endl;
 
 	}
-	
-	
-
-
-	
-	
-	
 	
 	return 0;
 }
