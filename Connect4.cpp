@@ -1,9 +1,48 @@
-#include "Main.h"
 #include <iostream>
-
+#include "Connect4.h"
 using namespace std;
 
-int checkWin(char connect4table[6][7]) {
+// try your functions to follow the flow of the game: printTableConnect4, turns, checkWinerConnect4
+void printTableConnect4(char connect4table[6][7]) {
+	for (int i = 0; i < 6; i++) {
+		cout << "-----------------------------" << endl;
+		for (int j = 0; j < 7; j++) {
+			cout << "| " << connect4table[i][j] << " ";
+		}
+		cout << "|" << endl;
+	}
+	cout << "-----------------------------" << endl;
+	for (int j = 0; j < 7; j++) {
+		cout << "| " << j + 1 << " ";
+	}
+	cout << "|" << endl;
+}
+
+void turns(bool& player, short& count, int& column, char conncect4table[6][7]) {
+
+	cout << "Which column do you want to place your piece in?" << endl;
+
+	if (column < 1 || column > 7 || (conncect4table[0][column - 1] == 'X' || conncect4table[0][column - 1] == 'O')) {
+		cout << "Invalid or full column, please pick another." << endl;
+		count--;
+	}
+	else {
+
+		for (int i = 5; i >= 0; i--)
+		{
+
+			if (conncect4table[i][column - 1] == ' ')
+			{
+				player ? conncect4table[i][column - 1] = 'X' : conncect4table[i][column - 1] = 'O';
+				break;
+			}
+
+		}
+		player = !player;
+	}
+}
+
+int checkWinerConnect4(char connect4table[6][7]) {
 	int countX = 0;
 	int countO = 0;				
 	
@@ -83,67 +122,25 @@ int checkWin(char connect4table[6][7]) {
 	return 0;
 }
 
-void printTable(char connect4table[6][7]) {
-	for (int i = 0; i < 6; i++) {
-		cout << "-----------------------------" << endl;
-		for (int j = 0; j < 7; j++) {
-			cout << "| " << connect4table[i][j] << " ";
-		}
-		cout << "|" << endl;
-	}
-	cout << "-----------------------------" << endl;
-	for (int j = 0; j < 7; j++) {
-		cout << "| " << j + 1 << " ";
-	}
-	cout << "|" << endl;
-}
-
-
-void turns(char conncect4table[6][7], bool &player, int &column, short &count) {
-	
-	cout << "Which column do you want to place your piece in?" << endl;
-	
-	if (column < 1 || column > 7 || (conncect4table[0][column - 1] == 'X' || conncect4table[0][column - 1] == 'O')) {
-		cout << "Invalid or full column, please pick another." << endl;
-		count--;
-	}
-	else {
-
-		for (int i = 5; i >= 0; i--)
-		{
-
-			if (conncect4table[i][column - 1] == ' ')
-			{
-				player ? conncect4table[i][column - 1] = 'X' : conncect4table[i][column - 1] = 'O';
-				break;
-			}
-
-		}
-		player = !player;
-	}
-}
-
-
-
-
-int connect4() {
+int startConnect4() {
 
 	char connect4table[6][7];
+	bool player = true;
+	char playAgain;
+	short count = 0;
+	int column;
+
 	for (int i = 0; i < 7; i++)
 	{
 		for (int j = 0; j < 6; j++) {
 			connect4table[j][i] = ' ';
 		}
 	}
-	short count = 0;
-	bool player = true;
-	char playAgain;
-	int column;
 	cout << "Welcome to Connect 4!" << endl;
 	cout << "Player 1 is X and Player 2 is O." << endl;
 	cout << "Type '0' to quit." << endl;
 	cout << "It is strongly advised to use the numbers 1-7 to place your piece and not letters/words." << endl;
-	printTable(connect4table);
+	printTableConnect4(connect4table);
 	
 	do {
 		while (count < 41) {
@@ -151,10 +148,10 @@ int connect4() {
 			cin >> column;
 			count++;
 			if (column == 0) break;  
-			else turns(connect4table, player, column, count);
+			else turns(player, count, column, connect4table);
 			
-			printTable(connect4table);
-			if (checkWin(connect4table) || column == 0) {
+			printTableConnect4(connect4table);
+			if (checkWinerConnect4(connect4table) || column == 0) {
 				
 				break;
 			} 
@@ -176,7 +173,7 @@ int connect4() {
 					connect4table[j][i] = ' ';
 				}
 			}
-			printTable(connect4table);
+			printTableConnect4(connect4table);
 		}
 		else {
 			cout << "Goodbye!" << endl;
